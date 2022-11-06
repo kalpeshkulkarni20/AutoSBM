@@ -1,0 +1,68 @@
+import time
+import openpyxl
+from selenium.webdriver.support.ui import Select
+from selenium import webdriver
+from selenium.webdriver import ActionChains, Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+chrome_Option = webdriver.ChromeOptions()
+from selenium.webdriver.chrome.options import Options
+options = webdriver.ChromeOptions()
+options.add_argument('user-data-dir=C:\\Users\\Kalpesh kulkarni\\AppData\\Local\\Google\\Chrome\\User Data')
+options.add_argument('profile-directory=Profile 2')
+#driver = webdriver.Chrome(executable_path=r'C:\Program Files (x86)\chromedriver.exe', options=options)
+s = Service(r'C:\Program Files (x86)\chromedriver.exe')
+driver = webdriver.Chrome(service=s, options=options)
+
+driver.implicitly_wait(10)
+driver.maximize_window()
+driver.implicitly_wait(20)
+
+wrkbk = openpyxl.load_workbook("C:\\Users\\Kalpesh kulkarni\\Music\\Data.xlsx")
+sh = wrkbk.active
+column_a =sh['A']
+
+
+
+for cell in column_a:
+    #twitter
+    driver.get("https://tweetdeck.twitter.com/")
+    driver.find_element(By.CSS_SELECTOR, 'textarea[placeholder*="What"]').send_keys(cell.value)
+    driver.find_element(By.CSS_SELECTOR, ".js-send-button.js-spinner-button.js-show-tip.Button--primary.btn-extra-height.padding-v--6.padding-h--12").click()
+
+    #getpocket
+    driver.get("https://getpocket.com/my-list")
+    driver.find_element(By.XPATH, "(//*[name()='svg'][@fill='currentColor'])[3]").click()
+    driver.find_element(By.CSS_SELECTOR, "input[placeholder='Save a URL https://...']").send_keys(cell.value)
+    driver.find_element(By.CSS_SELECTOR, ".add-button").click()
+
+    #Instapaper
+    driver.get("https://www.instapaper.com/u")
+    driver.find_element(By.CSS_SELECTOR, "span[data-content='Add Link']").click()
+    driver.find_element(By.CSS_SELECTOR, "div[class='form_line_inline'] input:nth-child(1)").send_keys(cell.value)
+    driver.find_element(By.CSS_SELECTOR, "div[class='form_line_inline'] input[value='Add']").click()
+
+    #Diigo
+    driver.get("https://www.diigo.com/user/kalpeshqmi")
+    driver.find_element(By.CSS_SELECTOR, ".addItemButton.blue").click()
+    driver.find_element(By.CSS_SELECTOR, "div[class='add-type-item link'] b").click()
+    driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > input:nth-child(2)").send_keys(cell.value)
+    driver.find_element(By.CSS_SELECTOR, ".ui.button.submitButton").click()
+    driver.find_element(By.XPATH, "//button[normalize-space()='Add']").click()
+
+    #trumbler
+    driver.get("https://www.tumblr.com/new/link")
+    driver.find_element(By.CSS_SELECTOR, "input[placeholder='Type or paste link']").send_keys(cell.value)
+    driver.find_element(By.CSS_SELECTOR, "button[aria-label='Insert']").click()
+    time.sleep(4)
+    driver.find_element(By.CSS_SELECTOR, "button[class='TRX6J VxmZd'] span[class='EvhBA']").click()
+
+print("sucess")
+
+
+
+
+
